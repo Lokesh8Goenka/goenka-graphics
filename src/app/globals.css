@@ -1,12 +1,35 @@
 @import "tailwindcss";
 
-@theme {
-  --color-paper: #faf7f2;
-  --color-paper-dim: #f2ece2;
-  --color-ink: #1f1d1a;
-  --color-ink-soft: #4a463f;
-  --color-ink-muted: #7a756b;
-  --color-line: #e7e0d4;
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --paper: #faf7f2;
+  --paper-dim: #f2ece2;
+  --card: #ffffff;
+  --ink: #1f1d1a;
+  --ink-soft: #4a463f;
+  --ink-muted: #7a756b;
+  --line: #e7e0d4;
+}
+
+.dark {
+  --paper: #17161a;
+  --paper-dim: #201f24;
+  --card: #201f24;
+  --ink: #f4f2ee;
+  --ink-soft: #bdb8ae;
+  --ink-muted: #8f8a80;
+  --line: #302e35;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
 
   --color-violet: #7b46c9;
   --color-sky: #3b9fd4;
@@ -26,10 +49,11 @@ html {
 }
 
 body {
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--font-sans), Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .text-gradient {

@@ -1,79 +1,44 @@
-type Hour = { day: string; time: string; closed?: boolean };
-
 export const site = {
   name: "Goenka Graphics & Printers",
   shortName: "Goenka Graphics",
   monogram: "GGP",
-  tagline: "You think, we ink.",
   founded: 1995,
   city: "Palampur",
   region: "Himachal Pradesh",
   address: "Palampur – Dharamsala Bypass Rd, Berachah, Palampur, Himachal Pradesh 176061",
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=Goenka+Graphics+Printers+Palampur",
+  mapEmbed:
+    "https://www.google.com/maps?q=Palampur%20Dharamsala%20Bypass%20Rd%20Berachah%20Palampur%20176061&output=embed",
   phones: [
     { label: "94180 15739", raw: "919418015739" },
     { label: "98574 78312", raw: "919857478312" },
   ],
   whatsapp: "919418015739",
-  hours: [
-    { day: "Monday", time: "Closed", closed: true },
-    { day: "Tuesday", time: "10 am – 2 pm, 3 – 6 pm" },
-    { day: "Wednesday", time: "10 am – 2 pm, 3 – 6 pm" },
-    { day: "Thursday", time: "10 am – 2 pm, 3 – 6 pm" },
-    { day: "Friday", time: "10 am – 2 pm, 3 – 6 pm" },
-    { day: "Saturday", time: "10 am – 2 pm, 3 – 6 pm" },
-    { day: "Sunday", time: "10 am – 2 pm, 3 – 6 pm" },
-  ] as Hour[],
 } as const;
 
-export const nav = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/work", label: "Our Work" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+export type NavKey = "home" | "services" | "work" | "about" | "contact";
+
+export const navPaths: { key: NavKey; href: string }[] = [
+  { key: "home", href: "/" },
+  { key: "services", href: "/services" },
+  { key: "work", href: "/work" },
+  { key: "about", href: "/about" },
+  { key: "contact", href: "/contact" },
 ];
 
-export type Service = {
-  slug: string;
-  title: string;
-  icon: string;
-  blurb: string;
-  points: string[];
-};
-
-export const services: Service[] = [
-  {
-    slug: "wedding-cards",
-    title: "Wedding & invitation cards",
-    icon: "heart",
-    blurb:
-      "Elegant marriage cards designed and printed to order — from classic traditional styles to modern foil-and-emboss finishes.",
-    points: ["Custom design & matter", "Foil, emboss & laser-cut options", "Matching envelopes & inserts"],
-  },
-  {
-    slug: "offset-bulk",
-    title: "Offset & bulk printing",
-    icon: "stack",
-    blurb:
-      "High-volume offset printing for books, bill books and long runs, with consistent colour and crisp registration.",
-    points: ["Books & bill books", "High-volume runs", "Sharp, consistent colour"],
-  },
-  {
-    slug: "digital-print",
-    title: "Digital & short-run printing",
-    icon: "printer",
-    blurb:
-      "Fast, affordable digital printing for flyers, brochures and small quantities with quick turnaround.",
-    points: ["Flyers & brochures", "Short runs, quick delivery", "Full-colour & B/W"],
-  },
-  {
-    slug: "stationery",
-    title: "Business stationery",
-    icon: "id",
-    blurb:
-      "Letterheads, visiting cards, invoice & estimate books, ID cards and menus — everything your business runs on.",
-    points: ["Letterheads & visiting cards", "Invoice & estimate books", "ID cards, menus & labels"],
-  },
+/** Visual metadata for the portfolio grid. Labels come from the dictionary; src derives from slug. */
+export const galleryMeta: { slug: string; tint: string }[] = [
+  { slug: "wedding-card-1", tint: "from-magenta/15 to-flame/15" },
+  { slug: "wedding-card-2", tint: "from-violet/15 to-magenta/15" },
+  { slug: "wedding-card-3", tint: "from-flame/15 to-magenta/15" },
+  { slug: "wedding-card-4", tint: "from-sky/15 to-violet/15" },
+  { slug: "business-card", tint: "from-sky/15 to-flame/15" },
+  { slug: "flyer", tint: "from-violet/15 to-sky/15" },
+  { slug: "brochure", tint: "from-magenta/15 to-violet/15" },
+  { slug: "bill-book", tint: "from-flame/15 to-sky/15" },
+  { slug: "menu", tint: "from-violet/15 to-magenta/15" },
+  { slug: "id-card", tint: "from-sky/15 to-magenta/15" },
+  { slug: "letterhead", tint: "from-magenta/15 to-flame/15" },
+  { slug: "book", tint: "from-flame/15 to-violet/15" },
 ];

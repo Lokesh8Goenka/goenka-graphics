@@ -1,0 +1,64 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { PageHero } from "@/components/PageHero";
+import { GalleryImage, type GalleryItem } from "@/components/GalleryImage";
+import { galleryMeta } from "@/lib/site";
+import { getDict, localHref, type Locale } from "@/lib/i18n";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  return { title: getDict(lang).work.title };
+}
+
+export default async function WorkPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const locale = lang as Locale;
+  const t = getDict(lang);
+  const labels = t.work.labels as Record<string, string>;
+
+  const gallery: GalleryItem[] = galleryMeta.map((g) => ({
+    src: `/work/${g.slug}.jpg`,
+    label: labels[g.slug] ?? g.slug,
+    tint: g.tint,
+  }));
+
+  return (
+    <>
+      <PageHero
+        eyebrow={t.work.eyebrow}
+        title={t.work.title}
+        subtitle={t.work.subtitle}
+      />
+
+      <section className="mx-auto max-w-6xl px-5 py-16">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {gallery.map((g) => (
+            <GalleryImage key={g.src} item={g} />
+          ))}
+        </div>
+
+        <div className="mt-14 flex flex-col items-center gap-4 rounded-2xl border border-line bg-paper-dim p-10 text-center">
+          <h2 className="font-display text-2xl font-semibold sm:text-3xl">
+            {t.work.ctaTitle}
+          </h2>
+          <p className="max-w-lg text-ink-soft">{t.work.ctaBody}</p>
+          <Link
+            href={localHref(locale, "/quote")}
+            className="inline-flex items-center gap-2 rounded-full bg-brand-gradient px-6 py-3 text-sm font-medium text-white transition-transform hover:scale-[1.03]"
+          >
+            {t.work.ctaButton} <ArrowRight size={16} />
+          </Link>
+        </div>
+      </section>
+    </>
+  );
+}
