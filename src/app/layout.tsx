@@ -21,11 +21,11 @@ export const metadata: Metadata = {
     title: `${site.name} — You think, we ink`,
     description: `The first computerised printing press in ${site.city}, ${site.region}, since ${site.founded}.`,
     type: "website",
-    images: [{ url: "/logo-wide.jpeg", width: 1280, height: 1038, alt: site.name }],
+    images: [{ url: "/logo-wide.png", width: 555, height: 450, alt: site.name }],
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/logo-wide.jpeg"],
+    images: ["/logo-wide.png"],
   },
 };
 

@@ -6,14 +6,15 @@ export function Logo({ lang, className = "" }: { lang: Locale; className?: strin
   return (
     <Link
       href={localHref(lang, "/")}
-      className={`inline-flex items-baseline gap-2 ${className}`}
+      aria-label={site.name}
+      className={`inline-flex items-center ${className}`}
     >
-      <span className="text-gradient font-display text-2xl font-semibold tracking-wide">
-        {site.monogram}
-      </span>
-      <span className="hidden text-sm font-medium text-ink-soft sm:inline">
-        {site.shortName}
-      </span>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/logo-mark.png"
+        alt={site.name}
+        className="h-9 w-auto transition-transform hover:scale-105"
+      />
     </Link>
   );
 }

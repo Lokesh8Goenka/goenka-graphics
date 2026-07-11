@@ -14,11 +14,11 @@ export function Splash() {
       setShow(false);
       return;
     }
-    const fadeT = setTimeout(() => setFade(true), 950);
+    const fadeT = setTimeout(() => setFade(true), 1100);
     const doneT = setTimeout(() => {
       setShow(false);
       sessionStorage.setItem("splashShown", "1");
-    }, 1500);
+    }, 1900);
     return () => {
       clearTimeout(fadeT);
       clearTimeout(doneT);
@@ -30,8 +30,8 @@ export function Splash() {
   return (
     <div
       aria-hidden="true"
-      className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#1a1a20] transition-opacity duration-500 ${
-        fade ? "opacity-0" : "opacity-100"
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#1a1a20] transition-all duration-700 ease-in-out ${
+        fade ? "scale-105 opacity-0" : "scale-100 opacity-100"
       }`}
     >
       {imgOk ? (
