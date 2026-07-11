@@ -74,6 +74,25 @@ body {
   border-radius: 999px;
 }
 
+@keyframes splashPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.splash-logo {
+  animation: splashPop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 @keyframes rise {
   from {
     opacity: 0;

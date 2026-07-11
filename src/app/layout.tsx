@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Fraunces } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
+import { Splash } from "@/components/Splash";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const fraunces = Fraunces({
@@ -12,8 +13,20 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://goenka-graphics.vercel.app"),
   title: `${site.name} — You think, we ink`,
   description: `${site.name}: the first computerised printing press in ${site.city}, ${site.region}, since ${site.founded}.`,
+  icons: { icon: "/logo.png", apple: "/logo.png" },
+  openGraph: {
+    title: `${site.name} — You think, we ink`,
+    description: `The first computerised printing press in ${site.city}, ${site.region}, since ${site.founded}.`,
+    type: "website",
+    images: [{ url: "/logo-wide.jpeg", width: 1280, height: 1038, alt: site.name }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/logo-wide.jpeg"],
+  },
 };
 
 export default function RootLayout({
@@ -35,7 +48,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-paper text-ink">{children}</body>
+      <body className="min-h-full flex flex-col bg-paper text-ink">
+        <Splash />
+        {children}
+      </body>
     </html>
   );
 }
