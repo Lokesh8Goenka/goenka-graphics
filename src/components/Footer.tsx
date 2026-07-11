@@ -9,8 +9,7 @@ export function Footer({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt={site.name} className="h-24 w-auto" />
-          <p className="mt-3 max-w-xs text-sm text-ink-soft">{dict.footer.blurb}</p>
+          <img src="/logo.png" alt={site.name} className="h-40 w-auto sm:h-44" />
         </div>
 
         <div>
