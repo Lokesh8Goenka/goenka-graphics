@@ -25,6 +25,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${fraunces.variable} h-full antialiased`}
     >
       <head>
