@@ -56,6 +56,28 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Visible focus for keyboard users without flashing rings on mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--color-sky);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  z-index: 100;
+}
+.skip-link:focus-visible {
+  left: 1rem;
+  top: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 999px;
+  font-size: 0.875rem;
+}
+
 .text-gradient {
   background: var(--brand-gradient);
   -webkit-background-clip: text;
@@ -74,14 +96,24 @@ body {
   border-radius: 999px;
 }
 
-@keyframes splashPop {
+/* ---------------------------------------------------------------- */
+/* Press-inspired motion: stamps, ink wipes, paper feeds, rollers.  */
+/* ---------------------------------------------------------------- */
+
+/* The splash logo slams down like a press plate hitting paper. */
+@keyframes pressStamp {
   0% {
     opacity: 0;
-    transform: scale(0.92);
+    transform: scale(2.1) rotate(-4deg);
+    filter: blur(6px);
   }
-  60% {
+  55% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(0.96) rotate(0.5deg);
+    filter: blur(0);
+  }
+  75% {
+    transform: scale(1.02);
   }
   100% {
     opacity: 1;
@@ -90,13 +122,30 @@ body {
 }
 
 .splash-logo {
-  animation: splashPop 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: pressStamp 0.55s cubic-bezier(0.5, 0, 0.3, 1.4) both;
 }
 
-@keyframes pageEnter {
+/* Ink ripple ring that spreads from the stamped logo. */
+@keyframes inkRipple {
+  0% {
+    opacity: 0.5;
+    transform: scale(0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+.ink-ripple {
+  animation: inkRipple 0.9s 0.28s ease-out both;
+}
+
+/* Pages feed in from below like a fresh sheet leaving the press. */
+@keyframes paperFeed {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(22px);
   }
   to {
     opacity: 1;
@@ -105,22 +154,108 @@ body {
 }
 
 .page-enter {
-  animation: pageEnter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  animation: paperFeed 0.4s cubic-bezier(0.16, 0.84, 0.3, 1) both;
 }
 
 .rise {
-  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: paperFeed 0.5s cubic-bezier(0.16, 0.84, 0.3, 1) both;
+}
+
+/* Ink-roller wipe: content is revealed left-to-right as if rolled on. */
+@keyframes inkWipe {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.ink-wipe {
+  animation: inkWipe 0.7s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* Stamp-in for stats and short labels: quick, decisive, slight overshoot. */
+@keyframes stampIn {
+  0% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.stamp-in {
+  animation: stampIn 0.4s cubic-bezier(0.5, 0, 0.3, 1.2) both;
+}
+
+/* Gradient rules draw themselves like a fresh line of ink. */
+@keyframes ruleDraw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.brand-rule {
+  transform-origin: left;
+  animation: ruleDraw 0.7s 0.2s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* Active-nav underline inks itself in. */
+.nav-ink {
+  transform-origin: left;
+  animation: ruleDraw 0.35s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+/* Scroll-driven paper-feed reveals (progressive enhancement, no JS).
+   Sections and cards slide out like sheets as they enter the viewport. */
+@supports (animation-timeline: view()) {
+  .print-reveal {
+    animation: paperFeed 0.6s cubic-bezier(0.16, 0.84, 0.3, 1) both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 45%;
+  }
+}
+
+/* Physical press-down on primary buttons, like a rubber stamp. */
+a.bg-brand-gradient:active,
+button.bg-brand-gradient:active {
+  transform: scale(0.95);
+  transition-duration: 80ms;
+}
+
+/* Roller shine: a light bar sweeps across gallery tiles on hover,
+   like the glossy pass of an ink roller. */
+.roller-shine {
+  position: relative;
+}
+.roller-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 60%
+  );
+  transform: translateX(-110%);
+}
+.roller-shine:hover::after {
+  transition: transform 0.65s cubic-bezier(0.65, 0, 0.35, 1);
+  transform: translateX(110%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -129,7 +264,16 @@ body {
   }
   .rise,
   .page-enter,
-  .splash-logo {
+  .splash-logo,
+  .ink-ripple,
+  .ink-wipe,
+  .stamp-in,
+  .brand-rule,
+  .nav-ink,
+  .print-reveal {
     animation: none;
+  }
+  .roller-shine::after {
+    display: none;
   }
 }

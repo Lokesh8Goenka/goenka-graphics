@@ -48,7 +48,7 @@ export default async function AboutPage({
         <div className="mx-auto max-w-4xl px-5 py-16">
           <div className="space-y-10">
             {a.timeline.map((item) => (
-              <div key={item.year} className="grid gap-4 sm:grid-cols-[130px_1fr]">
+              <div key={item.year} className="print-reveal grid gap-4 sm:grid-cols-[130px_1fr]">
                 <div className="text-gradient font-display text-2xl font-semibold">
                   {item.year}
                 </div>

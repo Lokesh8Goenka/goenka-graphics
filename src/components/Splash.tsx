@@ -9,16 +9,13 @@ export function Splash() {
   const [imgOk, setImgOk] = useState(true);
 
   useEffect(() => {
-    // Only show the splash once per browser session.
-    if (sessionStorage.getItem("splashShown")) {
-      setShow(false);
-      return;
-    }
-    const fadeT = setTimeout(() => setFade(true), 1100);
+    // Only show the splash once per browser session; dismiss immediately on repeats.
+    const shown = Boolean(sessionStorage.getItem("splashShown"));
+    const fadeT = setTimeout(() => setFade(true), shown ? 0 : 1100);
     const doneT = setTimeout(() => {
       setShow(false);
       sessionStorage.setItem("splashShown", "1");
-    }, 1900);
+    }, shown ? 0 : 1900);
     return () => {
       clearTimeout(fadeT);
       clearTimeout(doneT);
@@ -34,6 +31,7 @@ export function Splash() {
         fade ? "scale-105 opacity-0" : "scale-100 opacity-100"
       }`}
     >
+      <span className="ink-ripple absolute h-72 w-72 rounded-full border-2 border-white/40" />
       {imgOk ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img

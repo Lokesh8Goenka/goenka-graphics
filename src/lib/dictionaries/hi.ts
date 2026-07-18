@@ -20,6 +20,7 @@ export const hi: Dictionary = {
     orWhatsapp: "या WhatsApp पर मैसेज करें",
     closedMon: "सोमवार बंद",
     estLine: "स्थापित 1995 · पालमपुर, हिमाचल प्रदेश",
+    skipToContent: "सीधे कॉन्टेंट पर जाएँ",
   },
   home: {
     heroTitleA: "आप सोचिए,",
@@ -197,6 +198,9 @@ export const hi: Dictionary = {
     attachNote:
       "आर्टवर्क तैयार है? यह रिक्वेस्ट भेजिए, फिर खुलने वाली WhatsApp चैट में सीधे अपनी PDF या इमेज अटैच कर दीजिए।",
     submit: "WhatsApp पर रिक्वेस्ट भेजें",
+    errName: "कृपया अपना नाम लिखिए।",
+    errPhone: "कृपया सही 10 अंकों का फ़ोन नंबर डालिए।",
+    opening: "WhatsApp खुल रहा है…",
     preferCall: "कॉल करना है? डायल कीजिए",
     waHeader: "नई क्वोट रिक्वेस्ट — Goenka Graphics",
     waName: "नाम",

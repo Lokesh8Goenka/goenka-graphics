@@ -24,7 +24,7 @@ export default async function HomePage({
             {t.common.estLine}
           </p>
 
-          <h1 className="rise mx-auto mt-6 max-w-3xl font-display text-5xl font-semibold leading-[1.08] tracking-tight sm:text-7xl">
+          <h1 className="ink-wipe mx-auto mt-6 max-w-3xl font-display text-5xl font-semibold leading-[1.08] tracking-tight sm:text-7xl">
             {h.heroTitleA}{" "}
             <span className="text-gradient italic">{h.heroTitleB}</span>
           </h1>
@@ -52,9 +52,12 @@ export default async function HomePage({
         {/* Stats strip */}
         <div className="border-y border-line bg-paper-dim">
           <div className="mx-auto grid max-w-6xl grid-cols-2 divide-x divide-line px-5 sm:grid-cols-4">
-            {h.stats.map((s) => (
+            {h.stats.map((s, i) => (
               <div key={s.label} className="px-4 py-7 text-center">
-                <div className="text-gradient font-display text-3xl font-semibold">
+                <div
+                  className="stamp-in text-gradient font-display text-3xl font-semibold"
+                  style={{ animationDelay: `${0.35 + i * 0.12}s` }}
+                >
                   {s.value}
                 </div>
                 <div className="mt-1 text-xs text-ink-muted">{s.label}</div>
@@ -86,7 +89,7 @@ export default async function HomePage({
             <Link
               key={s.slug}
               href={localHref(locale, "/services")}
-              className="group rounded-2xl border border-line bg-card p-6 transition-all hover:-translate-y-1 hover:border-ink/15 hover:shadow-sm"
+              className="print-reveal group rounded-2xl border border-line bg-card p-6 transition-all hover:-translate-y-1 hover:border-ink/15 hover:shadow-sm"
             >
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-paper-dim">
                 <ServiceIcon name={s.icon} className="text-ink" size={22} />
@@ -110,7 +113,7 @@ export default async function HomePage({
           </h2>
           <div className="mt-12 grid gap-10 md:grid-cols-3">
             {h.reasons.map((r, i) => (
-              <div key={r.title}>
+              <div key={r.title} className="print-reveal">
                 <div className="text-gradient font-display text-2xl font-semibold">
                   0{i + 1}
                 </div>

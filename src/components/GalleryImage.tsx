@@ -13,7 +13,7 @@ export function GalleryImage({ item }: { item: GalleryItem }) {
   const [failed, setFailed] = useState(false);
 
   return (
-    <div className="group relative aspect-[4/5] overflow-hidden rounded-2xl border border-line bg-paper-dim">
+    <div className="print-reveal roller-shine group relative aspect-[4/5] overflow-hidden rounded-2xl border border-line bg-paper-dim">
       {!failed ? (
         <>
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -24,7 +24,7 @@ export function GalleryImage({ item }: { item: GalleryItem }) {
             onError={() => setFailed(true)}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent p-3 opacity-0 transition-opacity group-hover:opacity-100">
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent p-3 pt-8">
             <span className="text-sm font-medium text-white">{item.label}</span>
           </div>
         </>

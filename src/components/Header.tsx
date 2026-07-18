@@ -14,11 +14,12 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const items = navPaths.map((n) => ({
-    href: localHref(lang, n.href),
-    label: dict.nav[n.key],
-    isHome: n.href === "/",
-  }));
+  const items = navPaths.map((n) => {
+    const href = localHref(lang, n.href);
+    const active =
+      n.href === "/" ? pathname === href : pathname.startsWith(href);
+    return { href, label: dict.nav[n.key], active };
+  });
 
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-paper/85 backdrop-blur">
@@ -26,22 +27,24 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         <Logo lang={lang} />
 
         <nav className="hidden items-center gap-8 md:flex">
-          {items.map((item) => {
-            const active = item.isHome
-              ? pathname === item.href
-              : pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`text-sm transition-colors hover:text-ink ${
-                  active ? "text-ink" : "text-ink-soft"
-                }`}
-              >
-                {item.label}
-              </Link>
-            );
-          })}
+          {items.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={item.active ? "page" : undefined}
+              className={`relative py-1 text-sm transition-colors hover:text-ink ${
+                item.active ? "font-medium text-ink" : "text-ink-soft"
+              }`}
+            >
+              {item.label}
+              {item.active && (
+                <span
+                  aria-hidden
+                  className="nav-ink bg-brand-gradient absolute inset-x-0 -bottom-0.5 h-0.5 rounded-full"
+                />
+              )}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-center gap-1.5">
@@ -56,6 +59,8 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
           <button
             type="button"
             aria-label="Menu"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
             onClick={() => setOpen((v) => !v)}
             className="rounded-md p-2 text-ink-soft md:hidden"
           >
@@ -65,16 +70,25 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
       </div>
 
       {open && (
-        <div className="border-t border-line bg-paper md:hidden">
+        <div id="mobile-nav" className="border-t border-line bg-paper md:hidden">
           <nav className="mx-auto flex max-w-6xl flex-col px-5 py-2">
             {items.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="py-3 text-sm text-ink-soft"
+                aria-current={item.active ? "page" : undefined}
+                className={`flex items-center justify-between py-3 text-sm ${
+                  item.active ? "font-medium text-ink" : "text-ink-soft"
+                }`}
               >
                 {item.label}
+                {item.active && (
+                  <span
+                    aria-hidden
+                    className="bg-brand-gradient h-1.5 w-1.5 rounded-full"
+                  />
+                )}
               </Link>
             ))}
             <Link

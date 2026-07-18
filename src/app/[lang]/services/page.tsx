@@ -31,7 +31,7 @@ export default async function ServicesPage({
       <section className="mx-auto max-w-6xl px-5 py-16">
         <div className="grid gap-6 md:grid-cols-2">
           {s.items.map((item) => (
-            <div key={item.slug} className="rounded-2xl border border-line bg-card p-7">
+            <div key={item.slug} className="print-reveal rounded-2xl border border-line bg-card p-7">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-paper-dim">
                 <ServiceIcon name={item.icon} className="text-ink" size={24} />
               </div>

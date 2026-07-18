@@ -18,6 +18,7 @@ const en = {
     orWhatsapp: "Or message us on WhatsApp",
     closedMon: "Closed Mondays",
     estLine: "Est. 1995 · Palampur, Himachal Pradesh",
+    skipToContent: "Skip to content",
   },
   home: {
     heroTitleA: "You think,",
@@ -195,6 +196,9 @@ const en = {
     attachNote:
       "Have artwork ready? Send this request, then attach your PDF or image directly in the WhatsApp chat that opens.",
     submit: "Send request on WhatsApp",
+    errName: "Please tell us your name.",
+    errPhone: "Please enter a valid 10-digit phone number.",
+    opening: "Opening WhatsApp…",
     preferCall: "Prefer to call? Dial",
     waHeader: "New quote request — Goenka Graphics",
     waName: "Name",
