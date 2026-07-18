@@ -4,7 +4,12 @@ import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { GalleryImage, type GalleryItem } from "@/components/GalleryImage";
 import { galleryMeta } from "@/lib/site";
+import { getGallery } from "@/lib/gallery";
 import { getDict, localHref, type Locale } from "@/lib/i18n";
+
+/* Re-check the photo store every minute so uploads from /admin
+   appear without a redeploy. */
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -25,11 +30,20 @@ export default async function WorkPage({
   const t = getDict(lang);
   const labels = t.work.labels as Record<string, string>;
 
-  const gallery: GalleryItem[] = galleryMeta.map((g) => ({
-    src: `/work/${g.slug}.jpg`,
-    label: labels[g.slug] ?? g.slug,
-    tint: g.tint,
-  }));
+  const uploaded = await getGallery();
+  const gallery: GalleryItem[] =
+    uploaded.length > 0
+      ? uploaded.map((g, i) => ({
+          src: g.src,
+          label:
+            locale === "hi" && g.labelHi ? g.labelHi : g.labelEn || g.pathname,
+          tint: galleryMeta[i % galleryMeta.length].tint,
+        }))
+      : galleryMeta.map((g) => ({
+          src: `/work/${g.slug}.jpg`,
+          label: labels[g.slug] ?? g.slug,
+          tint: g.tint,
+        }));
 
   return (
     <>
