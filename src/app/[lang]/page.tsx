@@ -56,7 +56,7 @@ export default async function HomePage({
               <div key={s.label} className="px-4 py-7 text-center">
                 <div
                   className="stamp-in text-gradient font-display text-3xl font-semibold"
-                  style={{ animationDelay: `${0.35 + i * 0.12}s` }}
+                  style={{ animationDelay: `${0.55 + i * 0.2}s` }}
                 >
                   {s.value}
                 </div>

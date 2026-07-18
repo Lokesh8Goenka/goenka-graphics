@@ -11,11 +11,11 @@ export function Splash() {
   useEffect(() => {
     // Only show the splash once per browser session; dismiss immediately on repeats.
     const shown = Boolean(sessionStorage.getItem("splashShown"));
-    const fadeT = setTimeout(() => setFade(true), shown ? 0 : 1100);
+    const fadeT = setTimeout(() => setFade(true), shown ? 0 : 1700);
     const doneT = setTimeout(() => {
       setShow(false);
       sessionStorage.setItem("splashShown", "1");
-    }, shown ? 0 : 1900);
+    }, shown ? 0 : 2600);
     return () => {
       clearTimeout(fadeT);
       clearTimeout(doneT);

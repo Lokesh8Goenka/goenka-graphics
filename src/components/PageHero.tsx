@@ -19,7 +19,7 @@ export function PageHero({
           {title}
         </h1>
         {subtitle && (
-          <p className="rise mt-4 max-w-2xl text-lg text-ink-soft" style={{ animationDelay: "0.15s" }}>
+          <p className="rise mt-4 max-w-2xl text-lg text-ink-soft" style={{ animationDelay: "0.3s" }}>
             {subtitle}
           </p>
         )}
