@@ -56,6 +56,9 @@ const en = {
       "Pickup in Palampur or courier across India",
     ],
     ctaButton: "Upload & get a quote",
+    pressBandTitle: "Real presses. Real ink.",
+    pressBandBody:
+      "Offset and digital running side by side on our own floor in Palampur — no outsourcing, no middlemen.",
   },
   services: {
     eyebrow: "What we print",

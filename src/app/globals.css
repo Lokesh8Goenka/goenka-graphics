@@ -3,10 +3,10 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --paper: #faf7f2;
-  --paper-dim: #f2ece2;
-  --card: #ffffff;
-  --ink: #1f1d1a;
+  --paper: #f8f2e7;
+  --paper-dim: #f0e7d7;
+  --card: #fffdf8;
+  --ink: #221d17;
   --ink-soft: #4a463f;
   --ink-muted: #7a756b;
   --line: #e7e0d4;
@@ -38,6 +38,10 @@
 
   --font-sans: var(--font-geist-sans);
   --font-display: var(--font-fraunces);
+
+  /* Fixed "press room" darks for photo bands — identical in both themes. */
+  --color-press: #221b2b;
+  --color-press-soft: #b9b0c6;
 }
 
 :root {
@@ -258,6 +262,29 @@ button.bg-brand-gradient:active {
   transform: translateX(110%);
 }
 
+/* Slow parallax drift for full-bleed photo bands (scroll-driven, no JS). */
+@supports (animation-timeline: view()) {
+  @keyframes parallaxDrift {
+    from {
+      transform: translateY(-8%) scale(1.12);
+    }
+    to {
+      transform: translateY(8%) scale(1.12);
+    }
+  }
+  .parallax-img {
+    animation: parallaxDrift linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+}
+
+/* Thin CMYK strip used as a section divider. */
+.cmyk-strip {
+  height: 4px;
+  background: var(--brand-gradient);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -270,7 +297,8 @@ button.bg-brand-gradient:active {
   .stamp-in,
   .brand-rule,
   .nav-ink,
-  .print-reveal {
+  .print-reveal,
+  .parallax-img {
     animation: none;
   }
   .roller-shine::after {

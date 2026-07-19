@@ -28,6 +28,16 @@ export default async function AboutPage({
     <>
       <PageHero eyebrow={a.eyebrow} title={a.title} subtitle={a.subtitle} />
 
+      <section className="mx-auto max-w-5xl px-5 pt-4">
+        {/* Stock photo (Unsplash) — replace with a real photo of the press */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/machine.jpg"
+          alt=""
+          className="rise aspect-[16/9] w-full rounded-3xl object-cover shadow-lg"
+        />
+      </section>
+
       <section className="mx-auto max-w-3xl px-5 py-16">
         <div className="space-y-5 text-lg leading-relaxed text-ink-soft">
           <p>
@@ -41,6 +51,21 @@ export default async function AboutPage({
             <span className="text-gradient font-medium">{a.p3grad}</span>
             {a.p3post}
           </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-5 pb-16">
+        <div className="grid grid-cols-3 gap-4">
+          {["type", "roller-tool", "stamps"].map((img) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={img}
+              src={`/images/${img}.jpg`}
+              alt=""
+              loading="lazy"
+              className="print-reveal aspect-[9/7] w-full rounded-2xl object-cover shadow-md"
+            />
+          ))}
         </div>
       </section>
 
