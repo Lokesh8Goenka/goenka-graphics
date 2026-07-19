@@ -14,10 +14,13 @@ export async function generateMetadata({
 
 export default async function QuotePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string }>;
+  searchParams: Promise<{ product?: string }>;
 }) {
   const { lang } = await params;
+  const { product } = await searchParams;
   const t = getDict(lang);
 
   return (
@@ -31,6 +34,7 @@ export default async function QuotePage({
         <QuoteForm
           q={t.quote}
           products={t.services.items.map((i) => i.title)}
+          initialProduct={product?.slice(0, 80)}
         />
       </section>
     </>

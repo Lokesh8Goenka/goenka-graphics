@@ -68,12 +68,8 @@ const en = {
         icon: "heart",
         title: "Wedding & invitation cards",
         blurb:
-          "Elegant marriage cards designed and printed to order — from classic traditional styles to modern foil-and-emboss finishes.",
-        points: [
-          "Custom design & matter",
-          "Foil, emboss & laser-cut options",
-          "Matching envelopes & inserts",
-        ],
+          "Elegant marriage cards designed and printed to order — from classic traditional styles to modern designs.",
+        points: ["Matching envelopes & inserts"],
       },
       {
         slug: "offset-bulk",

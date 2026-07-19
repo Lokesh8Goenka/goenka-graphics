@@ -18,11 +18,18 @@ function isValidPhone(value: string): boolean {
 export function QuoteForm({
   q,
   products,
+  initialProduct,
 }: {
   q: Dictionary["quote"];
   products: string[];
+  /** Pre-selects the product, e.g. when arriving from a product card. */
+  initialProduct?: string;
 }) {
-  const [product, setProduct] = useState(products[0]);
+  const allProducts =
+    initialProduct && !products.includes(initialProduct)
+      ? [initialProduct, ...products]
+      : products;
+  const [product, setProduct] = useState(initialProduct ?? products[0]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -115,7 +122,7 @@ export function QuoteForm({
             value={product}
             onChange={(e) => setProduct(e.target.value)}
           >
-            {products.map((p) => (
+            {allProducts.map((p) => (
               <option key={p}>{p}</option>
             ))}
             <option>{q.somethingElse}</option>
@@ -165,9 +172,14 @@ export function QuoteForm({
 
       <p className="mt-3 text-center text-xs text-ink-muted">
         {q.preferCall}{" "}
-        <a href={`tel:+${site.phones[0].raw}`} className="text-sky">
-          {site.phones[0].label}
-        </a>
+        {site.phones.map((p, i) => (
+          <span key={p.raw}>
+            {i > 0 && " / "}
+            <a href={`tel:+${p.raw}`} className="text-sky">
+              {p.label}
+            </a>
+          </span>
+        ))}
       </p>
     </form>
   );

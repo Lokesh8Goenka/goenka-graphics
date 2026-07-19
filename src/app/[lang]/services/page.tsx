@@ -47,6 +47,12 @@ export default async function ServicesPage({
                   </li>
                 ))}
               </ul>
+              <Link
+                href={`${localHref(locale, "/quote")}?product=${encodeURIComponent(item.title)}`}
+                className="mt-6 inline-flex items-center gap-1.5 rounded-full border border-ink/15 px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper-dim"
+              >
+                {t.common.getQuote} <ArrowRight size={14} />
+              </Link>
             </div>
           ))}
         </div>

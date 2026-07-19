@@ -55,7 +55,13 @@ export default async function WorkPage({
       <section className="mx-auto max-w-6xl px-5 py-16">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {gallery.map((g) => (
-            <GalleryImage key={g.src} item={g} />
+            <Link
+              key={g.src}
+              href={`${localHref(locale, "/quote")}?product=${encodeURIComponent(g.label)}`}
+              aria-label={`${t.common.getQuote}: ${g.label}`}
+            >
+              <GalleryImage item={g} />
+            </Link>
           ))}
         </div>
 

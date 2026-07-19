@@ -40,12 +40,15 @@ export default async function HomePage({
             >
               {t.common.requestQuote} <ArrowRight size={16} />
             </Link>
-            <a
-              href={`tel:+${site.phones[0].raw}`}
-              className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper-dim"
-            >
-              <Phone size={16} /> {site.phones[0].label}
-            </a>
+            {site.phones.map((p) => (
+              <a
+                key={p.raw}
+                href={`tel:+${p.raw}`}
+                className="inline-flex items-center gap-2 rounded-full border border-ink/15 px-6 py-3 text-sm font-medium text-ink transition-colors hover:bg-paper-dim"
+              >
+                <Phone size={16} /> {p.label}
+              </a>
+            ))}
           </div>
         </div>
 
