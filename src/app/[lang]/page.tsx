@@ -94,7 +94,7 @@ export default async function HomePage({
       <section className="mx-auto max-w-6xl px-5 py-20">
         <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <h2 className="font-display text-3xl font-semibold sm:text-4xl">
+            <h2 className="font-display text-3xl font-semibold text-violet sm:text-4xl">
               {h.servicesTitle}
             </h2>
             <p className="mt-2 max-w-md text-ink-soft">{h.servicesSubtitle}</p>
@@ -117,7 +117,7 @@ export default async function HomePage({
               <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-card shadow-sm transition-transform group-hover:scale-110">
                 <ServiceIcon name={s.icon} size={22} />
               </div>
-              <h3 className="mt-4 font-display text-lg font-semibold text-ink">
+              <h3 className="mt-4 font-display text-lg font-semibold">
                 {s.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-ink-soft">
@@ -138,7 +138,7 @@ export default async function HomePage({
         />
         <div className="absolute inset-0 bg-gradient-to-r from-press/85 to-press/30" />
         <div className="relative mx-auto max-w-6xl px-5">
-          <h2 className="print-reveal max-w-xl font-display text-4xl font-semibold italic sm:text-6xl">
+          <h2 className="text-gradient print-reveal max-w-xl font-display text-4xl font-semibold italic sm:text-6xl">
             {h.pressBandTitle}
           </h2>
           <p className="print-reveal mt-4 max-w-md text-lg text-press-soft">
@@ -150,7 +150,7 @@ export default async function HomePage({
       {/* Why us */}
       <section className="bg-paper-dim">
         <div className="mx-auto max-w-6xl px-5 py-20">
-          <h2 className="max-w-2xl font-display text-3xl font-semibold sm:text-4xl">
+          <h2 className="max-w-2xl font-display text-3xl font-semibold text-magenta sm:text-4xl">
             {h.whyTitle}
           </h2>
           <div className="mt-12 grid gap-10 md:grid-cols-3">
