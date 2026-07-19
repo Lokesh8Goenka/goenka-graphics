@@ -35,8 +35,7 @@ export default async function WorkPage({
     uploaded.length > 0
       ? uploaded.map((g, i) => ({
           src: g.src,
-          label:
-            locale === "hi" && g.labelHi ? g.labelHi : g.labelEn || g.pathname,
+          label: g.labelEn || g.pathname,
           tint: galleryMeta[i % galleryMeta.length].tint,
         }))
       : galleryMeta.map((g) => ({

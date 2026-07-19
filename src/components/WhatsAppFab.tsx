@@ -4,9 +4,7 @@ import type { Dictionary, Locale } from "@/lib/i18n";
 
 export function WhatsAppFab({ dict }: { lang: Locale; dict: Dictionary }) {
   const msg = encodeURIComponent(
-    dict.langName === "हिंदी"
-      ? "नमस्ते Goenka Graphics, मुझे एक प्रिंटिंग काम के बारे में पूछना है।"
-      : "Hello Goenka Graphics, I'd like to enquire about a printing job.",
+    "Hello Goenka Graphics, I'd like to enquire about a printing job.",
   );
   return (
     <a

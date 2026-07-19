@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
-import { LanguageToggle } from "./LanguageToggle";
 import { navPaths } from "@/lib/site";
 import { localHref, type Dictionary, type Locale } from "@/lib/i18n";
 
@@ -48,7 +47,6 @@ export function Header({ lang, dict }: { lang: Locale; dict: Dictionary }) {
         </nav>
 
         <div className="flex items-center gap-1.5">
-          <LanguageToggle lang={lang} dict={dict} />
           <ThemeToggle />
           <Link
             href={localHref(lang, "/quote")}

@@ -29,7 +29,7 @@ async function saveManifest(entries: GalleryEntry[]) {
 }
 
 function revalidateWork() {
-  for (const lang of ["en", "hi"]) revalidatePath(`/${lang}/work`);
+  revalidatePath("/en/work");
 }
 
 export async function GET(request: NextRequest) {
@@ -49,7 +49,6 @@ export async function POST(request: NextRequest) {
   const form = await request.formData();
   const file = form.get("file");
   const labelEn = String(form.get("labelEn") ?? "").trim();
-  const labelHi = String(form.get("labelHi") ?? "").trim();
 
   if (!(file instanceof File) || file.size === 0) {
     return NextResponse.json({ error: "No image received." }, { status: 400 });
@@ -69,7 +68,7 @@ export async function POST(request: NextRequest) {
   }
   if (!labelEn) {
     return NextResponse.json(
-      { error: "Please add an English caption." },
+      { error: "Please add a caption." },
       { status: 400 },
     );
   }
@@ -83,7 +82,6 @@ export async function POST(request: NextRequest) {
     src: blob.url,
     pathname: blob.pathname,
     labelEn,
-    labelHi,
   };
   const entries = [...(await getGallery()), entry];
   await saveManifest(entries);

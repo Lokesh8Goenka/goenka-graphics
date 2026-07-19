@@ -1,6 +1,5 @@
 const en = {
   langName: "English",
-  switchTo: "हिंदी",
   nav: {
     home: "Home",
     services: "Services",

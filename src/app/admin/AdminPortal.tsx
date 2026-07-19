@@ -42,7 +42,6 @@ export function AdminPortal({
   const [password, setPassword] = useState("");
   const [entries, setEntries] = useState<GalleryEntry[]>([]);
   const [labelEn, setLabelEn] = useState("");
-  const [labelHi, setLabelHi] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(initialAuthed);
@@ -111,7 +110,7 @@ export function AdminPortal({
       return;
     }
     if (!labelEn.trim()) {
-      setError("Please add an English caption.");
+      setError("Please add a caption.");
       return;
     }
     setError("");
@@ -122,7 +121,6 @@ export function AdminPortal({
       const form = new FormData();
       form.append("file", compressed, "photo.jpg");
       form.append("labelEn", labelEn.trim());
-      form.append("labelHi", labelHi.trim());
       const res = await fetch("/api/admin/gallery", {
         method: "POST",
         body: form,
@@ -134,7 +132,6 @@ export function AdminPortal({
       }
       setEntries((prev) => [...prev, data]);
       setLabelEn("");
-      setLabelHi("");
       setFile(null);
       if (fileInput.current) fileInput.current.value = "";
       setNotice("Photo uploaded! It appears on the website within a minute.");
@@ -281,21 +278,12 @@ export function AdminPortal({
 
           <div className="space-y-4">
             <label className="block text-sm font-medium text-ink">
-              Caption (English)
+              Caption
               <input
                 className={inputClass}
                 value={labelEn}
                 onChange={(e) => setLabelEn(e.target.value)}
                 placeholder="e.g. Wedding cards"
-              />
-            </label>
-            <label className="block text-sm font-medium text-ink">
-              Caption (Hindi, optional)
-              <input
-                className={inputClass}
-                value={labelHi}
-                onChange={(e) => setLabelHi(e.target.value)}
-                placeholder="जैसे शादी के कार्ड"
               />
             </label>
             <button
@@ -355,11 +343,6 @@ export function AdminPortal({
                     <span className="block truncate text-sm font-medium text-ink">
                       {entry.labelEn}
                     </span>
-                    {entry.labelHi && (
-                      <span className="block truncate text-xs text-ink-muted">
-                        {entry.labelHi}
-                      </span>
-                    )}
                   </span>
                   <button
                     type="button"

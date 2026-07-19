@@ -7,7 +7,6 @@ export type GalleryEntry = {
   /** Blob pathname, used for deletion. */
   pathname: string;
   labelEn: string;
-  labelHi: string;
 };
 
 export const MANIFEST_PATH = "work/gallery.json";
