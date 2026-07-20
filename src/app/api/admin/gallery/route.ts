@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { del, put } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { ADMIN_COOKIE, verifyToken } from "@/lib/adminAuth";
-import { getGallery, MANIFEST_PATH, type GalleryEntry } from "@/lib/gallery";
+import {
+  getManifest,
+  toAdminPhotos,
+  MANIFEST_PATH,
+  type GalleryEntry,
+  type GalleryManifest,
+} from "@/lib/gallery";
+import { getDict } from "@/lib/i18n";
 
 const MAX_UPLOAD_BYTES = 4 * 1024 * 1024; // stay under Vercel's request body limit
 const ALLOWED_TYPES: Record<string, string> = {
@@ -19,8 +26,12 @@ function unauthorized() {
   return NextResponse.json({ error: "Not signed in." }, { status: 401 });
 }
 
-async function saveManifest(entries: GalleryEntry[]) {
-  await put(MANIFEST_PATH, JSON.stringify(entries), {
+function labels(): Record<string, string> {
+  return getDict("en").work.labels as Record<string, string>;
+}
+
+async function saveManifest(manifest: GalleryManifest) {
+  await put(MANIFEST_PATH, JSON.stringify(manifest), {
     access: "public",
     addRandomSuffix: false,
     allowOverwrite: true,
@@ -34,7 +45,8 @@ function revalidateWork() {
 
 export async function GET(request: NextRequest) {
   if (!authed(request)) return unauthorized();
-  return NextResponse.json(await getGallery());
+  const manifest = await getManifest();
+  return NextResponse.json(toAdminPhotos(manifest, labels()));
 }
 
 export async function POST(request: NextRequest) {
@@ -67,10 +79,7 @@ export async function POST(request: NextRequest) {
     );
   }
   if (!labelEn) {
-    return NextResponse.json(
-      { error: "Please add a caption." },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Please add a caption." }, { status: 400 });
   }
 
   try {
@@ -84,10 +93,18 @@ export async function POST(request: NextRequest) {
       pathname: blob.pathname,
       labelEn,
     };
-    const entries = [...(await getGallery()), entry];
-    await saveManifest(entries);
+    const manifest = await getManifest();
+    await saveManifest({
+      uploaded: [...manifest.uploaded, entry],
+      hidden: manifest.hidden,
+    });
     revalidateWork();
-    return NextResponse.json(entry);
+    return NextResponse.json({
+      id: entry.pathname,
+      src: entry.src,
+      label: entry.labelEn,
+      kind: "uploaded",
+    });
   } catch (err) {
     console.error("Blob upload failed:", err);
     const detail =
@@ -101,26 +118,57 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   if (!authed(request)) return unauthorized();
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return NextResponse.json(
+      { error: "Image storage is not configured (Vercel Blob store missing)." },
+      { status: 503 },
+    );
+  }
 
-  let pathname = "";
+  let id = "";
+  let kind = "";
   try {
     const body = await request.json();
-    pathname = typeof body.pathname === "string" ? body.pathname : "";
+    id = typeof body.id === "string" ? body.id : "";
+    kind = typeof body.kind === "string" ? body.kind : "";
   } catch {
     /* handled below */
   }
-  if (!pathname || pathname === MANIFEST_PATH) {
+  if (!id || id === MANIFEST_PATH) {
     return NextResponse.json({ error: "Invalid photo reference." }, { status: 400 });
   }
 
-  const entries = await getGallery();
-  const entry = entries.find((e) => e.pathname === pathname);
-  if (!entry) {
-    return NextResponse.json({ error: "Photo not found." }, { status: 404 });
-  }
+  try {
+    const manifest = await getManifest();
 
-  await del(entry.src);
-  await saveManifest(entries.filter((e) => e.pathname !== pathname));
-  revalidateWork();
-  return NextResponse.json({ ok: true });
+    if (kind === "default") {
+      // Hide a built-in stock photo (it stays in the repo, just not shown).
+      const hidden = manifest.hidden.includes(id)
+        ? manifest.hidden
+        : [...manifest.hidden, id];
+      await saveManifest({ uploaded: manifest.uploaded, hidden });
+    } else {
+      // Remove an uploaded photo from Blob storage.
+      const entry = manifest.uploaded.find((e) => e.pathname === id);
+      if (!entry) {
+        return NextResponse.json({ error: "Photo not found." }, { status: 404 });
+      }
+      await del(entry.src);
+      await saveManifest({
+        uploaded: manifest.uploaded.filter((e) => e.pathname !== id),
+        hidden: manifest.hidden,
+      });
+    }
+
+    revalidateWork();
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("Blob delete failed:", err);
+    const detail =
+      err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+    return NextResponse.json(
+      { error: `Delete failed — ${detail}` },
+      { status: 500 },
+    );
+  }
 }

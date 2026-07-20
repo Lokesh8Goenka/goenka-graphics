@@ -9,7 +9,7 @@ import {
   Trash2,
   TriangleAlert,
 } from "lucide-react";
-import type { GalleryEntry } from "@/lib/gallery";
+import type { AdminPhoto } from "@/lib/gallery";
 
 /**
  * Downscale a photo in the browser to a JPEG so phone pictures upload fast
@@ -48,7 +48,7 @@ export function AdminPortal({
 }) {
   const [authed, setAuthed] = useState(initialAuthed);
   const [password, setPassword] = useState("");
-  const [entries, setEntries] = useState<GalleryEntry[]>([]);
+  const [entries, setEntries] = useState<AdminPhoto[]>([]);
   const [labelEn, setLabelEn] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
@@ -164,18 +164,19 @@ export function AdminPortal({
     }
   }
 
-  async function handleDelete(entry: GalleryEntry) {
-    if (!window.confirm(`Delete "${entry.labelEn}" from the website?`)) return;
+  async function handleDelete(entry: AdminPhoto) {
+    const verb = entry.kind === "default" ? "Remove" : "Delete";
+    if (!window.confirm(`${verb} "${entry.label}" from the website?`)) return;
     setBusy(true);
     setError("");
     try {
       const res = await fetch("/api/admin/gallery", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ pathname: entry.pathname }),
+        body: JSON.stringify({ id: entry.id, kind: entry.kind }),
       });
       if (res.ok) {
-        setEntries((prev) => prev.filter((p) => p.pathname !== entry.pathname));
+        setEntries((prev) => prev.filter((p) => p.id !== entry.id));
         setNotice("Photo removed.");
       } else {
         const data = await res.json().catch(() => ({}));
@@ -346,40 +347,49 @@ export function AdminPortal({
             ({entries.length})
           </span>
         </h2>
+        <p className="mt-1 text-sm text-ink-soft">
+          &ldquo;Sample&rdquo; photos are the placeholders shown until you add
+          your own. Upload real photos, then remove the samples you don&rsquo;t
+          want.
+        </p>
         {loading ? (
           <p className="mt-4 flex items-center gap-2 text-sm text-ink-muted">
             <Loader2 size={15} className="animate-spin" /> Loading…
           </p>
         ) : entries.length === 0 ? (
           <p className="mt-4 text-sm text-ink-muted">
-            Nothing uploaded yet — the website is showing its built-in
-            placeholder tiles.
+            No photos on the website yet.
           </p>
         ) : (
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {entries.map((entry) => (
               <figure
-                key={entry.pathname}
+                key={entry.id}
                 className="group relative overflow-hidden rounded-2xl border border-line bg-paper-dim"
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={entry.src}
-                  alt={entry.labelEn}
+                  alt={entry.label}
                   loading="lazy"
                   className="aspect-[4/5] w-full object-cover"
                 />
+                {entry.kind === "default" && (
+                  <span className="absolute left-2 top-2 rounded-full bg-ink/70 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white">
+                    Sample
+                  </span>
+                )}
                 <figcaption className="flex items-center justify-between gap-2 p-3">
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-medium text-ink">
-                      {entry.labelEn}
+                      {entry.label}
                     </span>
                   </span>
                   <button
                     type="button"
                     onClick={() => handleDelete(entry)}
                     disabled={busy}
-                    aria-label={`Delete ${entry.labelEn}`}
+                    aria-label={`Remove ${entry.label}`}
                     className="shrink-0 rounded-full p-2 text-ink-muted transition-colors hover:bg-magenta/10 hover:text-magenta"
                   >
                     <Trash2 size={16} />
