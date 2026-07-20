@@ -73,20 +73,31 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const blob = await put(`work/img-${Date.now()}.${ext}`, file, {
-    access: "public",
-    contentType: file.type,
-  });
+  try {
+    const blob = await put(`work/img-${Date.now()}.${ext}`, file, {
+      access: "public",
+      contentType: file.type,
+    });
 
-  const entry: GalleryEntry = {
-    src: blob.url,
-    pathname: blob.pathname,
-    labelEn,
-  };
-  const entries = [...(await getGallery()), entry];
-  await saveManifest(entries);
-  revalidateWork();
-  return NextResponse.json(entry);
+    const entry: GalleryEntry = {
+      src: blob.url,
+      pathname: blob.pathname,
+      labelEn,
+    };
+    const entries = [...(await getGallery()), entry];
+    await saveManifest(entries);
+    revalidateWork();
+    return NextResponse.json(entry);
+  } catch (err) {
+    console.error("Blob upload failed:", err);
+    return NextResponse.json(
+      {
+        error:
+          "Upload to storage failed. Check that the Blob store is connected to this project and redeploy.",
+      },
+      { status: 500 },
+    );
+  }
 }
 
 export async function DELETE(request: NextRequest) {

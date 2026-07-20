@@ -11,7 +11,12 @@ import {
 } from "lucide-react";
 import type { GalleryEntry } from "@/lib/gallery";
 
-/** Downscale a photo in the browser so phone pictures upload fast and fit size limits. */
+/**
+ * Downscale a photo in the browser to a JPEG so phone pictures upload fast
+ * and fit size limits. Returns a jpg Blob on success. Throws only if the
+ * browser cannot decode the image at all (e.g. an unconverted HEIC on a
+ * browser without HEIC support) — the caller turns that into a clear message.
+ */
 async function compressImage(file: File): Promise<Blob> {
   const bitmap = await createImageBitmap(file);
   const maxSide = 1600;
@@ -21,12 +26,15 @@ async function compressImage(file: File): Promise<Blob> {
   const canvas = document.createElement("canvas");
   canvas.width = w;
   canvas.height = h;
-  canvas.getContext("2d")!.drawImage(bitmap, 0, 0, w, h);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("no-canvas");
+  ctx.drawImage(bitmap, 0, 0, w, h);
   bitmap.close();
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob(resolve, "image/jpeg", 0.85),
   );
-  return blob ?? file;
+  if (!blob) throw new Error("encode-failed");
+  return blob;
 }
 
 export function AdminPortal({
@@ -117,17 +125,27 @@ export function AdminPortal({
     setNotice("");
     setBusy(true);
     try {
-      const compressed = await compressImage(file);
+      let upload: Blob = file;
+      try {
+        upload = await compressImage(file);
+      } catch {
+        // Browser couldn't decode the image (often an iPhone HEIC). Send the
+        // original and let the server validate — it gives a clear message.
+        upload = file;
+      }
       const form = new FormData();
-      form.append("file", compressed, "photo.jpg");
+      form.append("file", upload, "photo.jpg");
       form.append("labelEn", labelEn.trim());
       const res = await fetch("/api/admin/gallery", {
         method: "POST",
         body: form,
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.error ?? "Upload failed.");
+        setError(
+          data.error ??
+            `Upload failed (${res.status}). Please try a JPG or PNG under 4 MB.`,
+        );
         return;
       }
       setEntries((prev) => [...prev, data]);
@@ -135,6 +153,12 @@ export function AdminPortal({
       setFile(null);
       if (fileInput.current) fileInput.current.value = "";
       setNotice("Photo uploaded! It appears on the website within a minute.");
+    } catch (err) {
+      setError(
+        `Couldn't upload that photo. Please try a JPG or PNG. (${
+          err instanceof Error ? err.message : "unknown error"
+        })`,
+      );
     } finally {
       setBusy(false);
     }
@@ -154,8 +178,15 @@ export function AdminPortal({
         setEntries((prev) => prev.filter((p) => p.pathname !== entry.pathname));
         setNotice("Photo removed.");
       } else {
-        setError((await res.json()).error ?? "Delete failed.");
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? `Delete failed (${res.status}).`);
       }
+    } catch (err) {
+      setError(
+        `Couldn't delete that photo. (${
+          err instanceof Error ? err.message : "unknown error"
+        })`,
+      );
     } finally {
       setBusy(false);
     }
@@ -270,7 +301,7 @@ export function AdminPortal({
             <input
               ref={fileInput}
               type="file"
-              accept="image/jpeg,image/png,image/webp"
+              accept="image/*"
               className="sr-only"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
             />
