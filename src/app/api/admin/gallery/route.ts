@@ -90,11 +90,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(entry);
   } catch (err) {
     console.error("Blob upload failed:", err);
+    const detail =
+      err instanceof Error ? `${err.name}: ${err.message}` : String(err);
     return NextResponse.json(
-      {
-        error:
-          "Upload to storage failed. Check that the Blob store is connected to this project and redeploy.",
-      },
+      { error: `Upload to storage failed — ${detail}` },
       { status: 500 },
     );
   }
