@@ -78,6 +78,10 @@ export default async function HomePage({
 
       {/* Stats: one CMYK colour per number */}
       <section className="mx-auto max-w-6xl px-5 pt-14">
+        <h2 className="print-reveal mb-8 text-center font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+          Goenka <span className="text-gradient">Graphics</span>
+          {" & Printers"}
+        </h2>
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {h.stats.map((s, i) => (
             <div
