@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  CheckCircle2,
   ImagePlus,
   Loader2,
   LogOut,
@@ -55,7 +56,31 @@ export function AdminPortal({
   const [loading, setLoading] = useState(initialAuthed);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [health, setHealth] = useState<
+    { state: "idle" | "checking" | "ok" | "fail"; message?: string }
+  >({ state: "idle" });
   const fileInput = useRef<HTMLInputElement>(null);
+
+  async function checkStorage() {
+    setHealth({ state: "checking" });
+    try {
+      const res = await fetch("/api/admin/health");
+      const data = await res.json().catch(() => ({}));
+      if (data.ok) {
+        setHealth({ state: "ok" });
+      } else {
+        setHealth({
+          state: "fail",
+          message: data.error ?? `Check failed (${res.status}).`,
+        });
+      }
+    } catch (err) {
+      setHealth({
+        state: "fail",
+        message: err instanceof Error ? err.message : "unknown error",
+      });
+    }
+  }
 
   const loadGallery = useCallback(async () => {
     try {
@@ -276,6 +301,44 @@ export function AdminPortal({
           Blob store → connect it to this project, then redeploy.
         </p>
       )}
+
+      {/* Storage connection self-test */}
+      <div className="mt-6 rounded-2xl border border-line bg-paper-dim p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-semibold text-ink">
+              Storage connection
+            </h2>
+            <p className="mt-0.5 text-xs text-ink-muted">
+              Tests that photos can actually be saved. Run this to confirm the
+              backend is working.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={checkStorage}
+            disabled={health.state === "checking"}
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-ink/15 bg-card px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-paper disabled:opacity-60"
+          >
+            {health.state === "checking" && (
+              <Loader2 size={15} className="animate-spin" />
+            )}
+            Check connection
+          </button>
+        </div>
+        {health.state === "ok" && (
+          <p className="mt-3 flex items-center gap-2 rounded-lg bg-sky/10 px-3 py-2 text-sm font-medium text-sky">
+            <CheckCircle2 size={16} /> Storage is connected and working — photos
+            can be saved.
+          </p>
+        )}
+        {health.state === "fail" && (
+          <p className="mt-3 rounded-lg bg-magenta/10 px-3 py-2 text-sm text-magenta">
+            <span className="font-medium">Storage is not working.</span>{" "}
+            {health.message}
+          </p>
+        )}
+      </div>
 
       <form
         onSubmit={handleUpload}
