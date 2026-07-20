@@ -20,7 +20,7 @@ These placeholders only show when nothing has been uploaded via /admin.
 
   wedding-card-1.jpg     -> a wedding / marriage card
   wedding-card-2.jpg     -> another wedding card design
-  wedding-card-3.jpg     -> a foil / laser-cut card
+  digital-print.jpg      -> a digital print job
   wedding-card-4.jpg     -> another wedding invitation
   business-card.jpg      -> a visiting / business card
   flyer.jpg              -> a flyer or poster

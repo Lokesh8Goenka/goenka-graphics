@@ -31,7 +31,7 @@ export const navPaths: { key: NavKey; href: string }[] = [
 export const galleryMeta: { slug: string; tint: string }[] = [
   { slug: "wedding-card-1", tint: "from-magenta/15 to-flame/15" },
   { slug: "wedding-card-2", tint: "from-violet/15 to-magenta/15" },
-  { slug: "wedding-card-3", tint: "from-flame/15 to-magenta/15" },
+  { slug: "digital-print", tint: "from-flame/15 to-magenta/15" },
   { slug: "wedding-card-4", tint: "from-sky/15 to-violet/15" },
   { slug: "business-card", tint: "from-sky/15 to-flame/15" },
   { slug: "flyer", tint: "from-violet/15 to-sky/15" },

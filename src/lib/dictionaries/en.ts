@@ -115,7 +115,7 @@ const en = {
     labels: {
       "wedding-card-1": "Wedding cards",
       "wedding-card-2": "Wedding cards",
-      "wedding-card-3": "Foil & laser-cut cards",
+      "digital-print": "Digital printing",
       "wedding-card-4": "Wedding invitations",
       "business-card": "Business cards",
       flyer: "Flyers & posters",

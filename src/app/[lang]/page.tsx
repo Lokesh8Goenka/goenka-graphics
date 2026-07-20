@@ -4,12 +4,18 @@ import { site } from "@/lib/site";
 import { getDict, localHref, type Locale } from "@/lib/i18n";
 import { ServiceIcon } from "@/components/ServiceIcon";
 
-/* Per-service CMYK accents, cycled in card order. */
+/* Per-service CMYK accents + backdrop photo, cycled in card order. */
 const serviceTints = [
   "bg-violet/10 text-violet ring-violet/25",
   "bg-sky/10 text-sky ring-sky/25",
   "bg-magenta/10 text-magenta ring-magenta/25",
   "bg-flame/10 text-flame ring-flame/25",
+];
+const serviceImages = [
+  "/work/wedding-card-1.jpg",
+  "/images/rollers.jpg",
+  "/work/digital-print.jpg",
+  "/work/letterhead.jpg",
 ];
 const statColors = ["text-violet", "text-sky", "text-magenta", "text-flame"];
 
@@ -112,17 +118,29 @@ export default async function HomePage({
             <Link
               key={s.slug}
               href={localHref(locale, "/services")}
-              className={`print-reveal group rounded-2xl p-6 ring-1 transition-all hover:-translate-y-1 hover:shadow-md ${serviceTints[i % 4]}`}
+              className={`print-reveal group relative overflow-hidden rounded-2xl p-6 pt-32 ring-1 transition-all hover:-translate-y-1 hover:shadow-md ${serviceTints[i % 4]}`}
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-card shadow-sm transition-transform group-hover:scale-110">
-                <ServiceIcon name={s.icon} size={22} />
+              {/* Product photo showing through the top of the card */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={serviceImages[i % 4]}
+                alt=""
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-card/15 via-card/80 to-card" />
+
+              <div className="relative">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-card shadow-md transition-transform group-hover:scale-110">
+                  <ServiceIcon name={s.icon} size={22} />
+                </div>
+                <h3 className="mt-4 font-display text-lg font-semibold">
+                  {s.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                  {s.blurb}
+                </p>
               </div>
-              <h3 className="mt-4 font-display text-lg font-semibold">
-                {s.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                {s.blurb}
-              </p>
             </Link>
           ))}
         </div>

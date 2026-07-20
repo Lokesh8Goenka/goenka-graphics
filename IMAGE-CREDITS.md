@@ -16,7 +16,6 @@ real photos of the press whenever available (same file paths).
 | `public/images/roller-tool.jpg` | Nik |
 | `public/work/wedding-card-1.jpg` | micheile henderson |
 | `public/work/wedding-card-2.jpg` | Fiona Murray-deGraaff |
-| `public/work/wedding-card-3.jpg` | Micah & Sammie Chaffin |
 | `public/work/wedding-card-4.jpg` | Annie Spratt |
 | `public/work/business-card.jpg` | Julian Tong |
 | `public/work/flyer.jpg` | Rombo |
@@ -26,6 +25,7 @@ real photos of the press whenever available (same file paths).
 | `public/work/id-card.jpg` | Lola Waligora-Thomas |
 | `public/work/letterhead.jpg` | iMattSmart |
 | `public/work/book.jpg` | ichwar |
+| `public/work/digital-print.jpg` | Bank Phrom |
 
 Gallery photos in `public/work/` are overridden automatically once real
 photos are uploaded via the `/admin` portal.
