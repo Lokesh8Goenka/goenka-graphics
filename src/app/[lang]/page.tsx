@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowRight, Phone, Upload, Check } from "lucide-react";
 import { site } from "@/lib/site";
 import { getDict, localHref, type Locale } from "@/lib/i18n";
-import { ServiceIcon } from "@/components/ServiceIcon";
 
 /* Per-service CMYK accents + backdrop photo, cycled in card order. */
 const serviceTints = [
@@ -135,10 +134,7 @@ export default async function HomePage({
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/75 to-card/95" />
 
               <div className="relative">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-card shadow-md transition-transform group-hover:scale-110">
-                  <ServiceIcon name={s.icon} size={22} />
-                </div>
-                <h3 className="mt-4 font-display text-lg font-semibold">
+                <h3 className="font-display text-lg font-semibold">
                   {s.title}
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-ink-soft">
