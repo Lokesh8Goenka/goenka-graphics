@@ -31,17 +31,19 @@ export default async function WorkPage({
   const labels = t.work.labels as Record<string, string>;
 
   const uploaded = await getGallery();
-  const gallery: GalleryItem[] =
+  const gallery: (GalleryItem & { anchor: string })[] =
     uploaded.length > 0
       ? uploaded.map((g, i) => ({
           src: g.src,
           label: g.labelEn || g.pathname,
           tint: galleryMeta[i % galleryMeta.length].tint,
+          anchor: g.pathname.split("/").pop()?.replace(/\.\w+$/, "") ?? `photo-${i}`,
         }))
       : galleryMeta.map((g) => ({
           src: `/work/${g.slug}.jpg`,
           label: labels[g.slug] ?? g.slug,
           tint: g.tint,
+          anchor: g.slug,
         }));
 
   return (
@@ -57,8 +59,10 @@ export default async function WorkPage({
           {gallery.map((g) => (
             <Link
               key={g.src}
+              id={g.anchor}
               href={`${localHref(locale, "/quote")}?product=${encodeURIComponent(g.label)}`}
               aria-label={`${t.common.getQuote}: ${g.label}`}
+              className="scroll-mt-28"
             >
               <GalleryImage item={g} />
             </Link>

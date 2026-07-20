@@ -2,30 +2,34 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
-import { ServiceIcon } from "@/components/ServiceIcon";
 import { getDict, localHref, type Locale } from "@/lib/i18n";
 
-/* One CMYK accent + photo per service, in card order. */
+/* One CMYK accent + photo per service, in card order; workAnchor is the
+   gallery tile on /work that shows this product's samples. */
 const cardStyles = [
   {
     tint: "bg-violet/10 ring-violet/25",
     text: "text-violet",
     img: "/work/wedding-card-1.jpg",
+    workAnchor: "wedding-card-1",
   },
   {
     tint: "bg-sky/10 ring-sky/25",
     text: "text-sky",
     img: "/images/rollers.jpg",
+    workAnchor: "book",
   },
   {
     tint: "bg-magenta/10 ring-magenta/25",
     text: "text-magenta",
     img: "/images/hero-press.jpg",
+    workAnchor: "digital-print",
   },
   {
     tint: "bg-flame/10 ring-flame/25",
     text: "text-flame",
     img: "/work/letterhead.jpg",
+    workAnchor: "letterhead",
   },
 ];
 
@@ -61,7 +65,11 @@ export default async function ServicesPage({
                 key={item.slug}
                 className={`print-reveal group overflow-hidden rounded-2xl ring-1 transition-all hover:-translate-y-1 hover:shadow-lg ${c.tint}`}
               >
-                <div className="relative aspect-[2/1] overflow-hidden">
+                <Link
+                  href={`${localHref(locale, "/work")}#${c.workAnchor}`}
+                  aria-label={`${t.nav.work}: ${item.title}`}
+                  className="relative block aspect-[2/1] overflow-hidden"
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={c.img}
@@ -69,12 +77,7 @@ export default async function ServicesPage({
                     loading="lazy"
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div
-                    className={`absolute bottom-4 left-5 flex h-11 w-11 items-center justify-center rounded-xl bg-card shadow-md ${c.text}`}
-                  >
-                    <ServiceIcon name={item.icon} size={22} />
-                  </div>
-                </div>
+                </Link>
                 <div className="p-7 pt-5">
                   <h2
                     className={`font-display text-2xl font-semibold ${c.text}`}

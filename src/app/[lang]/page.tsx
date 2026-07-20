@@ -77,7 +77,7 @@ export default async function HomePage({
 
       {/* Stats: one CMYK colour per number */}
       <section className="mx-auto max-w-6xl px-5 pt-14">
-        <h2 className="print-reveal mb-8 text-center font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+        <h2 className="print-reveal mb-10 text-center font-display text-4xl font-semibold tracking-tight sm:text-6xl">
           Goenka <span className="text-gradient">Graphics</span>
           {" & Printers"}
         </h2>
@@ -137,7 +137,7 @@ export default async function HomePage({
                 <h3 className="font-display text-lg font-semibold">
                   {s.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                <p className="mt-2 text-sm font-medium leading-relaxed text-ink">
                   {s.blurb}
                 </p>
               </div>
