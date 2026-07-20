@@ -128,7 +128,7 @@ export default async function HomePage({
                 loading="lazy"
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-card/15 via-card/80 to-card" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/75 to-card/95" />
 
               <div className="relative">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-card shadow-md transition-transform group-hover:scale-110">
