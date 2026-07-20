@@ -123,15 +123,16 @@ export default async function HomePage({
               href={localHref(locale, "/services")}
               className={`print-reveal group relative overflow-hidden rounded-2xl p-6 pt-32 ring-1 transition-all hover:-translate-y-1 hover:shadow-md ${serviceTints[i % 4]}`}
             >
-              {/* Product photo showing through the top of the card */}
+              {/* Faint product photo wash behind the text (kept muted so the
+                  copy stays the star — see Business stationery card). */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={serviceImages[i % 4]}
                 alt=""
                 loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="absolute inset-0 h-full w-full object-cover opacity-30 transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/75 to-card/95" />
+              <div className="absolute inset-0 bg-gradient-to-b from-card/30 via-card/60 to-card/85" />
 
               <div className="relative">
                 <h3 className="font-display text-lg font-semibold">
